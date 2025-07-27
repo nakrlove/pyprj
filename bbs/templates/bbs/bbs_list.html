@@ -1,34 +1,53 @@
-    <div class="list_board">
-		<table cellspacing="0" border="0">
-			<caption>List of articles</caption>
-			<thead>
-				<tr>
-					<th scope="col" class="no">번호</th>
-					<!-- <th scope="col" class="category">분류</th>					 -->
-					<th scope="col" class="subject">제목</th>
-					<th scope="col" class="name">작성자</th>					
-					<th scope="col" class="date">작성일</th>					
-					<th scope="col" class="hit">조회수</th>									
-				</tr>
-			</thead>
-			<tbody>
-				<!-- notice -->
-				<!-- // notice -->
-			    {% for bbs in bbs_list %}
+    {% load custom_filters %}
+	<h1>게시글 목록</h1>
 
-				<tr>
-					<td class="no">140</td>
-					<!-- <td><span class="category">게시판</span></td>					 -->
-					<td class="subject">
-						<a href="/bbs_shop/read.htm?me_popup=&amp;auto_frame=&amp;cate_sub_idx=8451&amp;search_first_subject=&amp;list_mode=board&amp;board_code=qna&amp;search_key=&amp;key=&amp;page=1&amp;idx=8701">
-						<span>&nbsp;{{bbs.title}}&nbsp;</span>
-						<span class="commentCount"></span>																																																</a>
-					</td>
-					<td class="name inline">{{ bbs.writer }}</td>
-					<td class="date inline">{{ bbs.created_at|date:"Y-m-d H:i" }}</td>
-					<td class="hit inline"><i class="sp-ico hit">hit</i>1434</td>
-			    </tr>
-				{% endfor%}	
-			</tbody>
-		</table>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for bbs in bbs_list %}
+			<!-- {# num = start_index - forloop.counter0 #} -->
+			<tr>
+				
+				
+				<!-- <td>{{ start_index|add:"-"|add:forloop.counter0 }} </td> -->
+				<td>{{ start_index|desnumber:forloop.counter0 }} </td>
+				<!-- <td>{{ forloop.counter0 }}</td> -->
+				<td>
+					{% if bbs.depth > 0 %}
+						{{ ""|safe|repeat:bbs.depth }}↳
+					{% endif %}
+					{{ bbs.title }}
+				</td>
+				<td>{{ bbs.writer }}</td>
+				<td>{{ bbs.created_at|date:"Y-m-d H:i" }}</td>
+			</tr>
+			{% empty %}
+			<tr><td colspan="4">등록된 글이 없습니다.</td></tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<div>
+		{% if is_paginated %}
+			<div>
+				{% if page_obj.has_previous %}
+					<a href="?page=1">처음</a>
+					<a href="?page={{ page_obj.previous_page_number }}">이전</a>
+				{% endif %}
+
+				<span>페이지 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+				{% if page_obj.has_next %}
+					<a href="?page={{ page_obj.next_page_number }}">다음</a>
+					<a href="?page={{ page_obj.paginator.num_pages }}">끝</a>
+				{% endif %}
+			</div>
+		{% endif %}
 	</div>

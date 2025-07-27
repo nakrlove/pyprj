@@ -22,6 +22,7 @@ class Bbs(models.Model):
         blank=True,
         verbose_name='제목'
     )
+    
     content = models.TextField(verbose_name='본문')
     writer = models.CharField(max_length=100, verbose_name='작성자')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='작성일')
