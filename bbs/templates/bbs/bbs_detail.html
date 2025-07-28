@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en-us" dir="ltr">
+
+<head>
+    <title>Add 게시글 및 댓글 | Django site admin</title>
+    <link rel="stylesheet" href="/static/admin/css/base.css">
+
+    <link rel="stylesheet" href="/static/admin/css/dark_mode.css">
+    <script src="/static/admin/js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="/static/admin/css/nav_sidebar.css">
+    <script src="/static/admin/js/nav_sidebar.js" defer></script>
+
+    <link rel="stylesheet" href="/static/admin/css/forms.css">
+
+
+    <!-- <script src="/admin/jsi18n/"></script>
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script src="/static/admin/js/jquery.init.js"></script>
+<script src="/static/admin/js/core.js"></script>
+<script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script src="/static/admin/js/actions.js"></script>
+<script src="/static/admin/js/urlify.js"></script>
+<script src="/static/admin/js/prepopulate.js"></script>
+<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script> -->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/admin/css/responsive.css">
+
+
+    <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+<body class=" app-bbs model-bbs change-form" data-admin-utc-offset="0">
+    <!-- Container -->
+    <div id="container">
+
+
+        <!-- Header -->
+
+        <header id="header"></header>
+
+        <!-- END Header -->
+
+        <div class="main" id="main">
+            <nav class="sticky" id="nav-sidebar" aria-label="Sidebar">
+                <main id="content-start" class="content" tabindex="-1">
+
+                    <!-- Content -->
+                    <div id="content" class="colM">
+
+                        <h1>Add 게시글 및 댓글</h1>
+
+                        <div id="content-main">
+
+                            <form method="post" id="bbs_form" novalidate><input type="hidden" name="csrfmiddlewaretoken"
+                                    value="VW05KFxuhlWCJt5yx0dRgjMkmCROX4g6eIc7Q3QR2RfnYUief4nQzIhQWwDuIyn4">
+                                <div>
+
+                                    <fieldset class="module aligned ">
+                                        <!-- <div class="form-row field-type">
+                                            <div>
+                                                <div class="flex-container">
+                                                    <label class="required" for="id_type">타입:</label>
+
+                                                    <select name="type" id="id_type">
+                                                        <option value="POST" selected>게시글</option>
+
+                                                        <option value="COMMENT">댓글</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class="form-row field-title">
+                                            <div>
+
+                                                <div class="flex-container">
+
+                                                    <label for="id_title">제목:</label>
+
+                                                    <input type="text" name="title" class="vTextField" maxlength="200"
+                                                        id="id_title">
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="form-row field-content">
+
+                                            <div>
+                                                <div class="flex-container">
+                                                    <label class="required" for="id_content">본문:</label>
+
+                                                    <textarea name="content" cols="40" rows="10" class="vLargeTextField"
+                                                        required id="id_content"></textarea>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-row field-writer">
+
+                                            <div>
+                                                <div class="flex-container">
+
+                                                    <label class="required" for="id_writer">작성자:</label>
+
+                                                    <input type="text" name="writer" class="vTextField" maxlength="100"
+                                                        required id="id_writer">
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- <div class="form-row field-is_deleted">
+
+
+                                            <div>
+
+                                                <div class="flex-container checkbox-row">
+
+                                                    <input type="checkbox" name="is_deleted" id="id_is_deleted"><label
+                                                        class="vCheckboxLabel" for="id_is_deleted">삭제 여부</label>
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div> -->
+
+                                        <!-- <div class="form-row field-group_id">
+
+
+                                            <div>
+
+                                                <div class="flex-container">
+
+                                                    <label for="id_group_id">그룹 ID:</label>
+
+                                                    <input type="number" name="group_id" class="vIntegerField"
+                                                        id="id_group_id">
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div> -->
+
+                                        <!-- <div class="form-row field-parent">
+
+
+                                            <div>
+
+                                                <div class="flex-container">
+
+                                                    <label for="id_parent">부모 댓글:</label>
+
+                                                    <div class="related-widget-wrapper" data-model-ref="bbs">
+                                                        <select name="parent" data-context="available-source"
+                                                            id="id_parent">
+                                                            <option value="" selected>---------</option>
+
+                                                        </select>
+
+                                                        <a class="related-widget-wrapper-link change-related"
+                                                            id="change_id_parent"
+                                                            data-href-template="/admin/bbs/bbs/__fk__/change/?_to_field=id&amp;_popup=1"
+                                                            data-popup="yes" title="Change selected 게시글 및 댓글"><img
+                                                                src="/static/admin/img/icon-changelink.svg" alt=""
+                                                                width="24" height="24"></a><a
+                                                            class="related-widget-wrapper-link add-related"
+                                                            id="add_id_parent" data-popup="yes"
+                                                            href="/admin/bbs/bbs/add/?_to_field=id&amp;_popup=1"
+                                                            title="Add another 게시글 및 댓글"><img
+                                                                src="/static/admin/img/icon-addlink.svg" alt=""
+                                                                width="24" height="24"></a><a
+                                                            class="related-widget-wrapper-link view-related"
+                                                            id="view_id_parent"
+                                                            data-href-template="/admin/bbs/bbs/__fk__/change/?_to_field=id"
+                                                            title="View selected 게시글 및 댓글"><img
+                                                                src="/static/admin/img/icon-viewlink.svg" alt=""
+                                                                width="24" height="24"></a>
+
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div> -->
+
+                                        <!-- <div class="form-row field-depth">
+
+
+                                            <div>
+
+                                                <div class="flex-container">
+
+                                                    <label class="required" for="id_depth">댓글 깊이:</label>
+
+                                                    <input type="number" name="depth" value="0" class="vIntegerField"
+                                                        min="0" required id="id_depth">
+
+
+                                                </div>
+
+                                            </div>
+
+
+                                        </div> -->
+
+
+                                    </fieldset>
+
+                                    <div class="submit-row">
+
+                                        <input type="submit" value="Save" class="default" name="_save">
+
+                                        <input type="submit" value="Save and add another" name="_addanother">
+                                        <input type="submit" value="Save and continue editing" name="_continue">
+                                    </div>
+
+                                    <script id="django-admin-form-add-constants" src="/static/admin/js/change_form.js"
+                                        data-model-name="bbs" async>
+                                        </script>
+
+                                    <script id="django-admin-prepopulated-fields-constants"
+                                        src="/static/admin/js/prepopulate_init.js" data-prepopulated-fields="[]">
+                                        </script>
+
+                                </div>
+                            </form>
+                        </div>
+
+                        <br class="clear">
+                    </div>
+                    <!-- END Content -->
+                </main>
+        </div>
+        <footer id="footer"></footer>
+    </div>
+    <!-- END Container -->
+
+    <!-- SVGs -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">
+        <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-auto">
+            <path d="M0 0h24v24H0z" fill="currentColor" />
+            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z" />
+        </symbol>
+        <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-moon">
+            <path d="M0 0h24v24H0z" fill="currentColor" />
+            <path
+                d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z" />
+        </symbol>
+        <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-sun">
+            <path d="M0 0h24v24H0z" fill="currentColor" />
+            <path
+                d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z" />
+        </symbol>
+    </svg>
+    <!-- END SVGs -->
+
+</body>
+
+</html>

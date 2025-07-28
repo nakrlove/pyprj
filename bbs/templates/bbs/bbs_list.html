@@ -1,6 +1,5 @@
     {% load custom_filters %}
 	<h1>게시글 목록</h1>
-
 	<table border="1">
 		<thead>
 			<tr>
@@ -14,8 +13,6 @@
 			{% for bbs in bbs_list %}
 			<!-- {# num = start_index - forloop.counter0 #} -->
 			<tr>
-				
-				
 				<!-- <td>{{ start_index|add:"-"|add:forloop.counter0 }} </td> -->
 				<td>{{ start_index|desnumber:forloop.counter0 }} </td>
 				<!-- <td>{{ forloop.counter0 }}</td> -->
