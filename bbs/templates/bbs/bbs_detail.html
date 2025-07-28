@@ -14,7 +14,9 @@
     <script src="/static/admin/js/nav_sidebar.js" defer></script>
 
     <link rel="stylesheet" href="/static/admin/css/forms.css">
-
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 
     <!-- <script src="/admin/jsi18n/"></script>
 <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
@@ -61,20 +63,7 @@
                                 <div>
 
                                     <fieldset class="module aligned ">
-                                        <!-- <div class="form-row field-type">
-                                            <div>
-                                                <div class="flex-container">
-                                                    <label class="required" for="id_type">타입:</label>
 
-                                                    <select name="type" id="id_type">
-                                                        <option value="POST" selected>게시글</option>
-
-                                                        <option value="COMMENT">댓글</option>
-
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div> -->
 
                                         <div class="form-row field-title">
                                             <div>
@@ -93,15 +82,10 @@
                                         </div>
                                         <div class="form-row field-content">
 
-                                            <div>
-                                                <div class="flex-container">
-                                                    <label class="required" for="id_content">본문:</label>
-
-                                                    <textarea name="content" cols="40" rows="10" class="vLargeTextField"
-                                                        required id="id_content"></textarea>
-
-                                                </div>
-
+                                            <div class="form-floating">
+                                                <textarea class="form-control" placeholder="Leave a comment here"
+                                                    id="floatingTextarea2" style="height: 100px"></textarea>
+                                                <label for="floatingTextarea2">Comments</label>
                                             </div>
                                         </div>
 
@@ -120,108 +104,10 @@
                                             </div>
 
                                         </div>
-                                        <!-- <div class="form-row field-is_deleted">
-
-
-                                            <div>
-
-                                                <div class="flex-container checkbox-row">
-
-                                                    <input type="checkbox" name="is_deleted" id="id_is_deleted"><label
-                                                        class="vCheckboxLabel" for="id_is_deleted">삭제 여부</label>
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div> -->
-
-                                        <!-- <div class="form-row field-group_id">
-
-
-                                            <div>
-
-                                                <div class="flex-container">
-
-                                                    <label for="id_group_id">그룹 ID:</label>
-
-                                                    <input type="number" name="group_id" class="vIntegerField"
-                                                        id="id_group_id">
-
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div> -->
-
-                                        <!-- <div class="form-row field-parent">
-
-
-                                            <div>
-
-                                                <div class="flex-container">
-
-                                                    <label for="id_parent">부모 댓글:</label>
-
-                                                    <div class="related-widget-wrapper" data-model-ref="bbs">
-                                                        <select name="parent" data-context="available-source"
-                                                            id="id_parent">
-                                                            <option value="" selected>---------</option>
-
-                                                        </select>
-
-                                                        <a class="related-widget-wrapper-link change-related"
-                                                            id="change_id_parent"
-                                                            data-href-template="/admin/bbs/bbs/__fk__/change/?_to_field=id&amp;_popup=1"
-                                                            data-popup="yes" title="Change selected 게시글 및 댓글"><img
-                                                                src="/static/admin/img/icon-changelink.svg" alt=""
-                                                                width="24" height="24"></a><a
-                                                            class="related-widget-wrapper-link add-related"
-                                                            id="add_id_parent" data-popup="yes"
-                                                            href="/admin/bbs/bbs/add/?_to_field=id&amp;_popup=1"
-                                                            title="Add another 게시글 및 댓글"><img
-                                                                src="/static/admin/img/icon-addlink.svg" alt=""
-                                                                width="24" height="24"></a><a
-                                                            class="related-widget-wrapper-link view-related"
-                                                            id="view_id_parent"
-                                                            data-href-template="/admin/bbs/bbs/__fk__/change/?_to_field=id"
-                                                            title="View selected 게시글 및 댓글"><img
-                                                                src="/static/admin/img/icon-viewlink.svg" alt=""
-                                                                width="24" height="24"></a>
-
-                                                    </div>
-
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div> -->
-
-                                        <!-- <div class="form-row field-depth">
-
-
-                                            <div>
-
-                                                <div class="flex-container">
-
-                                                    <label class="required" for="id_depth">댓글 깊이:</label>
-
-                                                    <input type="number" name="depth" value="0" class="vIntegerField"
-                                                        min="0" required id="id_depth">
-
-
-                                                </div>
-
-                                            </div>
-
-
-                                        </div> -->
-
+                                     <div class="mb-3">
+                                        <label for="formFile" class="form-label">파일/label>
+                                        <input class="form-control" type="file" id="formFile">
+                                     </div>
 
                                     </fieldset>
 
