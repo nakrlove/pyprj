@@ -56,7 +56,7 @@ class Bbs(models.Model):
         verbose_name_plural = '게시글 및 댓글'
         ordering = ['group_id', 'created_at']
         app_label = 'bbs'           # 
-        db_table = 'bbs_bbs'            # MySQL 테이블명과 일치하게
+        db_table = 'bbs_bbs'        # MySQL 테이블명과 일치하게
         managed = False             # 이미 MySQL에 존재한다면 꼭 필요
 
     def __str__(self):

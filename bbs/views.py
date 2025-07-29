@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from bbs.db.bbs_mysql import get_bbs_with_rownum,get_total_bbs_count
 # from bbs.models import MySQLDB  
 from django.views.generic import ListView
+
 class BbsLV(ListView):
 # class BbsLV(MySQLDB):    
     model = Bbs
@@ -12,8 +13,69 @@ class BbsLV(ListView):
     context_object_name = 'bbs_list'
     paginate_by = 20  # 3번 조건: 20건씩 가져오기    
 
- 
+    #==================================================================================================
+    # ListView는 기본적으로 GET 요청만 처리하도록 설계되어 있으며, POST 요청을 처리하려면 직접 오버라이드해서 구현해야 합니다
+    #==================================================================================================
+    #  순서 흐름 (GET 요청 기준):
+    # as_view() 
+    # → def dispatch(self, request, *args, **kwargs)
+    # → def get(self, request, *args, **kwargs)
+    # → def get_queryset(self)
+    # → def get_context_data(self, **kwargs):
+    # → def render_to_response(self, context, **response_kwargs)
+    # → template 렌더링
+
+
+    #  순서 흐름 (POST 요청 기준):
+    # as_view() 
+    # → dispatch(request, *args, **kwargs) 
+    # → post(request, *args, **kwargs)   
+    # → def form_valid(self, form)	  유효한 form 처리	HttpResponseRedirect, render_to_response()
+    # → def form_invalid(self, form)  유효하지 않은 form 처리	render_to_response()
+    # → render_to_response(context) 또는 HttpResponse 반환
+
+    
+    # GET 파라미터 접근	self.request.GET.get('키')
+    # POST 파라미터 접근	self.request.POST.get('키')
+    # 쿠키 접근	self.request.COOKIES.get('키')
+    # 세션 접근	self.request.session.get('키')
+    # 헤더 접근	self.request.headers.get('헤더이름')
+
+    # GET 요청
+    # ──────▶ as_view()
+    #         └──▶ dispatch()
+    #             └──▶ get()
+    #                     ├──▶ get_queryset()
+    #                     ├──▶ get_context_data()
+    #                     └──▶ render_to_response()
+    #                         └──▶ return HttpResponse
+
+    # POST 요청
+    # ──────▶ as_view()
+    #         └──▶ dispatch()
+    #             └──▶ post()
+    #                     ├──▶ form_valid() / form_invalid()
+    #                     └──▶ render_to_response() or redirect()
+    #                         └──▶ return HttpResponse
+
+
+
+    def dispatch(self, request, *args, **kwargs):
+        print("🟠 dispatch 호출됨")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        print("🔵 get 호출됨")
+        return super().get(request, *args, **kwargs)
+
+
+    
+    # def render_to_response(self, context, **response_kwargs):
+    #     print("######### render_to_response() ##########")
+
+
     def get_queryset(self):
+        print(" ======== get_queryset ======")
         # 페이지 번호 계산
         page = self.request.GET.get('page')
         if page is None:
@@ -31,6 +93,7 @@ class BbsLV(ListView):
         return get_bbs_with_rownum(offset=offset, limit=limit)
 
     def get_context_data(self, **kwargs):
+        print(" ======== get_context_data ======")
         context = super().get_context_data(**kwargs)
 
         # 총 데이터 개수는 get_bbs_with_rownum에서 같이 가져오거나 별도 함수로 가져와야 함
@@ -90,3 +153,33 @@ def bbs_list(request):
         'start_index': start_index,
     }
     return render(request, 'bbs/bbs_list.html', context)
+
+
+
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse_lazy
+# from .models import Bbs
+from .forms import PostForm  # ModelForm
+
+class BbsCreateView(CreateView):
+    model = Bbs
+    form_class = PostForm
+    template_name = 'bbs/bbs_writer.html'
+    success_url = reverse_lazy('list')  # 글 작성 후 이동할 URL
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit'] = False
+        print('========get_context_data========')
+        return context
+
+class BbsUpdateView(UpdateView):
+    model = Bbs
+    form_class = PostForm
+    template_name = 'bbs/bbs_writer.html'
+    success_url = reverse_lazy('list')  # 글 수정 후 이동할 URL
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit'] = True
+        return context

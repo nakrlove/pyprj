@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from bbs.views import BbsLV
-
+from .views import BbsCreateView, BbsUpdateView
 app_name = 'bbs'
 urlpatterns = [
     
     path('list/', BbsLV.as_view() , name="index"),
+    # path('write/', BbsLV.as_view() , name="write"),
+
+
+    path('write/', BbsCreateView.as_view(), name='write'),
+    path('write/<int:pk>/', BbsUpdateView.as_view(), name='edit'),
 ]

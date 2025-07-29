@@ -3,10 +3,56 @@
 
 <head>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<style>
+		/* 테이블을 브라우저 좌우 150px 마진으로 넓게 */
+	.table-wrapper {
+		margin: 0 150px;
+		display: inline-block;
+		width: calc(100% - 300px); /* 좌우 여백 고려 */
+	}
+
+	/* 버튼을 table 바로 아래 오른쪽에 붙이기 */
+	.btn-container {
+		display: flex;
+		justify-content: flex-end;
+		margin: 10px 150px 0 150px; /* table과 같은 좌우 마진 */
+	}
+
+	.btn-w a {
+		background-color: tomato;
+		padding: 10px;
+		color: #fff;
+		border-radius: 10px;
+		text-decoration: none;
+	}
+
+	.table-fixed {
+		table-layout: fixed;
+		width: 100%;
+	}
+
+	.table-fixed th:nth-child(1), .table-fixed td:nth-child(1) {
+		width: 20%;
+	}
+
+	.table-fixed th:nth-child(2), .table-fixed td:nth-child(2) {
+		width: 40%;  /* 제목 */
+	}
+
+	.table-fixed th:nth-child(3), .table-fixed td:nth-child(3) {
+		width: 20%;
+	}
+
+	.table-fixed th:nth-child(4), .table-fixed td:nth-child(4) {
+		width: 20%;
+	}
+	</style>
 </head>
 {% load custom_filters %}
 <h1>게시글 목록</h1>
-<table class="table table-dark table-hover">
+<div class="table-wrapper">
+<table class="table table-dark table-hover table table-dark table-hover table-fixed" style="width: 100%;">
 	<thead>
 		<tr>
 			<th scope="col">번호</th>
@@ -36,10 +82,16 @@
 			<td colspan="4">등록된 글이 없습니다.</td>
 		</tr>
 		{% endfor %}
+		
 	</tbody>
+	
 </table>
-
-
+</div>
+<div class="btn-container">
+    <div class="btn-w">
+        <a href="{% url 'bbs:write' %}">글쓰기</a>
+    </div>
+</div>
 
 <!-- <nav aria-label="Page navigation example">
 	<ul class="pagination justify-content-center">
