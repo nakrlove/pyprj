@@ -1,5 +1,6 @@
 from django.db import models
 
+# 게시판 테이블 
 # Create your models here.
 class Bbs(models.Model):
     POST = 'POST'
@@ -29,12 +30,26 @@ class Bbs(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name='수정일')
     is_deleted = models.BooleanField(default=False, verbose_name='삭제 여부')
 
-    group_id = models.IntegerField(
-        null=True,
-        blank=True,
-        db_index=True,
-        verbose_name='그룹 ID'
-    )
+    
+    
+    group_id = models.IntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # 1차 저장 - 객체를 먼저 저장해서 id를 생성
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+
+        # 신규 생성 시에만 group_id 설정 (id와 동일하게)
+        if is_new and self.group_id != self.pk:
+            self.group_id = self.pk
+            super().save(update_fields=['group_id'])
+
+    # group_id = models.IntegerField(
+    #     null=True,
+    #     blank=True,
+    #     db_index=True,
+    #     verbose_name='그룹 ID'
+    # )
     parent = models.ForeignKey(
         'self',
         null=True,
@@ -62,3 +77,21 @@ class Bbs(models.Model):
     def __str__(self):
         return f"[{self.get_type_display()}] {self.title or self.content[:30]}"
 
+
+
+# 파일등록 테이블 
+class BbsFile(models.Model):
+    fid = models.AutoField(primary_key=True)  # PK 이름을 fid로 변경
+    bbs         = models.ForeignKey(Bbs, on_delete=models.CASCADE, db_column='id',related_name='files')
+    file        = models.FileField(upload_to='uploads/')
+    orig_name   = models.CharField(max_length=255)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    # upload_file = models.FileField(upload_to='uploads/', blank=True, null=True)  # 
+    class Meta:
+        verbose_name = '게시글 첨부파일'
+        verbose_name_plural = '게시글 첨부 파일'
+        # ordering  = ['group_id', 'created_at']
+        app_label = 'bbs'           # 
+        db_table  = 'bbs_files'        # MySQL 테이블명과 일치하게
+        managed   = True
+                     # 이미 MySQL에 존재한다면 꼭 필요

@@ -161,16 +161,45 @@ from django.urls import reverse_lazy
 # from .models import Bbs
 from .forms import PostForm  # ModelForm
 
+from django.db import transaction
+
+from .models import Bbs
+from bbs.dao.bbs_models import BbsFile 
+
 class BbsCreateView(CreateView):
     model = Bbs
     form_class = PostForm
     template_name = 'bbs/bbs_writer.html'
-    success_url = reverse_lazy('list')  # 글 작성 후 이동할 URL
+    success_url = reverse_lazy('bbs:index')  # 작성 후 이동할 URL
+
+    @transaction.atomic
+    def form_valid(self, form):
+        print(" form_valid. called #################")
+        response = super().form_valid(form)
+        print(f" 1 bbs_instance  ####---")
+        bbs_instance = self.object
+        print(f" 2 bbs_instance  ####---")
+        # group_id에 id 복사
+        if not bbs_instance.group_id:
+            bbs_instance.group_id = bbs_instance.id
+            bbs_instance.save()
+
+        # 첨부파일 처리
+        files = self.request.FILES.getlist('file')  # name="file"과 일치해야 함
+        for f in files:
+            BbsFile.objects.create(
+                bbs=bbs_instance,
+                file=f,
+                orig_name=f.name,
+            )
+       
+             
+        return response
 
     def get_context_data(self, **kwargs):
+        print(f" ---- get_context_data  #")
         context = super().get_context_data(**kwargs)
         context['is_edit'] = False
-        print('========get_context_data========')
         return context
 
 class BbsUpdateView(UpdateView):
