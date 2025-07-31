@@ -4,8 +4,21 @@ from bbs.dao.bbs_models import Bbs
 from django.core.paginator import Paginator
 from bbs.db.bbs_mysql import get_bbs_with_rownum,get_total_bbs_count
 # from bbs.models import MySQLDB  
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 
+
+
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse_lazy
+# from .models import Bbs
+from .forms import PostForm  # ModelForm
+from django.db import transaction
+from .models import Bbs
+from bbs.dao.bbs_models import BbsFile 
+
+#####################################
+# 게시판 목록 조회
+#####################################
 class BbsLV(ListView):
 # class BbsLV(MySQLDB):    
     model = Bbs
@@ -110,9 +123,6 @@ class BbsLV(ListView):
         print(f"start_index = {start_index}")
         # ----------------------------------------
 
-
-
-
         paginator = context['paginator']
         page_obj = context['page_obj']
 
@@ -155,17 +165,9 @@ def bbs_list(request):
     return render(request, 'bbs/bbs_list.html', context)
 
 
-
-from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
-# from .models import Bbs
-from .forms import PostForm  # ModelForm
-
-from django.db import transaction
-
-from .models import Bbs
-from bbs.dao.bbs_models import BbsFile 
-
+#####################################
+# 게시판 내용 신규등록
+#####################################
 class BbsCreateView(CreateView):
     model = Bbs
     form_class = PostForm
@@ -202,13 +204,57 @@ class BbsCreateView(CreateView):
         context['is_edit'] = False
         return context
 
+
+#####################################
+# 게시판 내용 수정
+#####################################
 class BbsUpdateView(UpdateView):
     model = Bbs
     form_class = PostForm
     template_name = 'bbs/bbs_writer.html'
-    success_url = reverse_lazy('list')  # 글 수정 후 이동할 URL
+    success_url = reverse_lazy('bbs:index')  # 글 수정 후 이동할 URL
+
+
+    @transaction.atomic
+    def form_valid(self, form):
+        print(" BbsUpdateView form_valid. called #################")
+        response = super().form_valid(form)
+        bbs_instance = self.object
+        # group_id에 id 복사
+        if not bbs_instance.group_id:
+            bbs_instance.group_id = bbs_instance.id
+            bbs_instance.save()
+
+        # 첨부파일 처리
+        files = self.request.FILES.getlist('file')  # name="file"과 일치해야 함
+        for f in files:
+            BbsFile.objects.create(
+                bbs=bbs_instance,
+                file=f,
+                orig_name=f.name,
+            )
+        return response
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_edit'] = True
+        return context
+    
+
+#####################################
+# 게시판 수정을 위한 상세조회
+#####################################
+class BbsDetailView(DetailView):
+    model = Bbs
+    template_name = 'bbs/bbs_detail.html'  # 상세보기 템플릿
+    context_object_name = 'bbs'             # 템플릿에서 쓸 변수명
+    print(" BbsDetailView called ================= ")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['file_list'] = self.object.files.all()  # related_name='files' 이용
+        print(f"file ==={context['file_list']}")
+        for f in self.object.files.all():
+         print(f.orig_name , f.file)
         return context

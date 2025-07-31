@@ -29,3 +29,5 @@ Pipfile.lock
 poetry.lock
 venv/
 .env/
+
+uploads/

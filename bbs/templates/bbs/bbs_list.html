@@ -64,7 +64,7 @@
 	<tbody>
 		{% for bbs in bbs_list %}
 		<!-- {# num = start_index - forloop.counter0 #} -->
-		<tr>
+		<tr onclick="detailview('{{ bbs.id }}')">
 			<!-- <td>{{ start_index|add:"-"|add:forloop.counter0 }} </td> -->
 			<td scope="row">{{ start_index|desnumber:forloop.counter0 }} </td>
 			<!-- <td>{{ forloop.counter0 }}</td> -->
@@ -138,5 +138,15 @@
 </nav>
 {# endif #}
 
+<script>
+
+	function detailview(id) {
+		
+		//게시판 수정링크
+		//window.location.href = "/bbs/"+id+"/";
+		//게시판 상세 페이지
+		window.location.href = "/bbs/"+id+"/";
+	}
+</script>
 
 </html>

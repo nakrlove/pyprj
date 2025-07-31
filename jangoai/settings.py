@@ -77,14 +77,14 @@ DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    # },
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onbidb',
+        'NAME': 'mysql',
         'USER': 'dbuser',
         'PASSWORD': 'dbuser@12',
-        'HOST': '172.16.41.134',
+        'HOST': '192.168.56.101',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',

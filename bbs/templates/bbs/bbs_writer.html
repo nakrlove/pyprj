@@ -66,7 +66,7 @@
     </style>
 </head>
 <body>
-    <form action="{% url 'bbs:write' %}" enctype="multipart/form-data" method="post">
+    <form action="{% if bbs %}{% url 'bbs:update' bbs.pk %}{% else %}{% url 'bbs:write' %}{% endif %}" enctype="multipart/form-data" method="post">
      {% csrf_token %}
    
     <div class="card">
@@ -76,18 +76,24 @@
     </div>
     <div class="card-write">
         <div class="myinfo">
-            이름<input type="text" name="writer" placeholder="이름을 입력하세요">
+            이름<input type="text" name="writer" placeholder="이름을 입력하세요" value="{{ bbs.writer|default_if_none:'' }}">
             <!-- 비밀번호<input type="text" placeholder="이름을 입력하세요"> -->
         </div>
         <div class="title-w">
-            제목<input type="text" name="title" placeholder="제목을 입려하세요.">
+            제목<input type="text" name="title" placeholder="제목을 입려하세요." value="{{ bbs.title|default_if_none:'' }}">
 
         </div>
         <div class="msg">
-            내용<textarea name="content" placeholder="내용을 입력하세요."></textarea>
-            <input type="file" name="file" multiple>
+            내용<textarea name="content" placeholder="내용을 입력하세요.">{{ bbs.content|default_if_none:'' }}</textarea>
         </div>
-        <div class="btn-w"><button type="submit">작성</button></div>
+        <div>
+           &nbsp;&nbsp;   &nbsp;&nbsp;
+           {% for file in file_list %}
+            <a href="{{ file.file }}">{{ file.orig_name }}</a>
+           {% endfor %} <p></p>
+           <input type="file" name="file" multiple>
+        </div>
+        <div class="btn-w"><button type="submit"> {% if bbs %}수정{% else %}작성{% endif %}</button></div>
     </div>
     </form>
 </body>

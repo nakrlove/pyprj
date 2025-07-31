@@ -72,7 +72,7 @@ class Bbs(models.Model):
         ordering = ['group_id', 'created_at']
         app_label = 'bbs'           # 
         db_table = 'bbs_bbs'        # MySQL 테이블명과 일치하게
-        managed = False             # 이미 MySQL에 존재한다면 꼭 필요
+        managed = True             # 이미 MySQL에 존재한다면 꼭 필요
 
     def __str__(self):
         return f"[{self.get_type_display()}] {self.title or self.content[:30]}"
