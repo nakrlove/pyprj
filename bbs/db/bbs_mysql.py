@@ -1,6 +1,10 @@
 from django.db import connection
 
 def get_bbs_with_rownum(offset=0, limit=20):
+
+    print(f" DB Connection {connection.settings_dict}")
+
+
     with connection.cursor() as cursor:
         cursor.execute(f"""
             SELECT

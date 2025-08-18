@@ -73,6 +73,7 @@ class Bbs(models.Model):
         app_label = 'bbs'           # 
         db_table = 'bbs_bbs'        # MySQL 테이블명과 일치하게
         managed = True             # 이미 MySQL에 존재한다면 꼭 필요
+        print(f"db_table = {db_table}")
 
     def __str__(self):
         return f"[{self.get_type_display()}] {self.title or self.content[:30]}"

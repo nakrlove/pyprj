@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+# from bbs.views import Push
+# from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('bbs/',include('bbs.urls')),
+    # path('send_push/', Push.as_view(), name='send_push'),
+    
 ]

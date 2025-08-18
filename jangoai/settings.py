@@ -81,10 +81,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mysql',
+        'NAME': 'onbidb',
         'USER': 'dbuser',
         'PASSWORD': 'dbuser@12',
-        'HOST': '192.168.56.101',
+        # 'HOST': '192.168.56.101',
+        'HOST': '172.16.41.134',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
@@ -133,3 +134,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+#FCM_SERVER_KEY = "여기에_서버키_입력"

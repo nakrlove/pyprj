@@ -102,6 +102,9 @@ class BbsLV(ListView):
         offset = (page - 1) * self.paginate_by
         limit = self.paginate_by
 
+      
+        # for obj in Bbs.objects.all().values():
+        #     print(obj)
         # get_bbs_with_rownum 호출해서 데이터 가져오기
         return get_bbs_with_rownum(offset=offset, limit=limit)
 
@@ -147,22 +150,22 @@ class BbsLV(ListView):
         return context    
 
 
-def bbs_list(request):
-    post_list = Bbs.objects.all().order_by('-created_at')  # 최신순
-    paginator = Paginator(post_list, 10)  # 한 페이지 10개
-    page_number = request.GET.get('page', 1)
-    page_obj = paginator.get_page(page_number)
-    print("ddddddddd")
-    # 전체 글 수
-    total_count = paginator.count
-    # 현재 페이지의 시작 순번 (전체 글 수에서 현재 페이지 시작 인덱스 빼기)
-    start_index = total_count - (page_obj.number - 1) * paginator.per_page
+    def bbs_list(request):
+        post_list = Bbs.objects.all().order_by('-created_at')  # 최신순
+        paginator = Paginator(post_list, 10)  # 한 페이지 10개
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        print("ddddddddd")
+        # 전체 글 수
+        total_count = paginator.count
+        # 현재 페이지의 시작 순번 (전체 글 수에서 현재 페이지 시작 인덱스 빼기)
+        start_index = total_count - (page_obj.number - 1) * paginator.per_page
 
-    context = {
-        'page_obj': page_obj,
-        'start_index': start_index,
-    }
-    return render(request, 'bbs/bbs_list.html', context)
+        context = {
+            'page_obj': page_obj,
+            'start_index': start_index,
+        }
+        return render(request, 'bbs/bbs_list.html', context)
 
 
 #####################################
@@ -258,3 +261,14 @@ class BbsDetailView(DetailView):
         for f in self.object.files.all():
          print(f.orig_name , f.file)
         return context
+    
+
+# from bbs.service.send_push import send_test_push
+
+# class Push:
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         print(" 호출 했다. ")
+#         context['push_result'] = send_test_push(self.request)
+#         return context
