@@ -23,6 +23,7 @@ db.sqlite3
 # Migrations (원하면 제외 가능)
 */migrations/__pycache__/
 */migrations/*.pyc
+bbs/migrations
 
 # Pipenv, Poetry, venv
 Pipfile.lock
@@ -30,4 +31,4 @@ poetry.lock
 venv/
 .env/
 
-uploads/
+#uploads/

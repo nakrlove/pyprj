@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deep Learning Result</title>
+</head>
+<body>
+    <h1>Deep Learning Result</h1>
+
+    {% if result %}
+        <ul>
+        {% for key, value in result.items %}
+            <li>{{ key }} : {{ value }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>결과가 없습니다.</p>
+    {% endif %}
+
+    <!-- 예: POST 요청을 보내는 폼 -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">실행</button>
+    </form>
+</body>
+</html>

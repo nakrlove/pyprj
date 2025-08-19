@@ -274,7 +274,7 @@ class BbsDetailView(DetailView):
 #         return context
 
 
-from biz.real_estate_price_forecast import Deep
+from bbs.biz.real_estate_price_forecast import engine
 class Deeplearing(TemplateView):
     template_name = 'bbs/deeplearing.html'  # 상세보기 템플릿
     # context_object_name = 'bbs'             # 템플릿에서 쓸 변수명
@@ -282,11 +282,16 @@ class Deeplearing(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['file_list'] = self.object.files.all()  # related_name='files' 이용
-        # print(f"file ==={context['file_list']}")
-        # for f in self.object.files.all():
-        #  print(f.orig_name , f.file)
-        print(" Deeplearing Start == ")
-        Deep()
-        print(" Deeplearing E == ")
+    
+        # print(" Deeplearing Start == ")
+        # engine()
+        # print(" Deeplearing E == ")
         return context
+    
+
+    def post(self, request, *args, **kwargs):
+        # POST 요청 처리 로직
+        print("Deeplearing POST Start == ")
+        retsult = engine()  # 예: 딥러닝 호출
+        print("Deeplearing POST End == ")
+        return render(request, self.template_name, {'result': retsult}) # 원하는 응답으로 바꿀 수 있음    

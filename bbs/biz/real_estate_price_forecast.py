@@ -4,11 +4,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from xgboost import XGBRegressor
 import numpy as np
+import os
 
-
-def Deep():
+def engine():
     # 데이터 불러오기
-    file_path = './csv/아파트(매매)_실거래가_20250819144622-ver0.2.csv'
+    file_path = os.path.join(os.path.dirname(__file__), '..', 'csv', '아파트(매매)_실거래가_20250819144622-ver0.2.csv')
+    file_path = os.path.normpath(file_path)  # 경로 정규화
     df = pd.read_csv(file_path, encoding='utf-8', sep=';')
 
 
@@ -52,9 +53,9 @@ def Deep():
 
     # 예측하고자 하는 매물의 정보 입력
     input_sigungu = "서울특별시 강남구" 
-    input_area = 84.9
-    input_year_built = 2018
-    input_floor = 15
+    input_area = 90.9        #전용면적
+    input_year_built = 2010  #건축년도(사용승인)
+    input_floor = 8         #층수
 
     # 현재 년월 기준으로 경과년수와 계약년월 계산
     current_year = 2025
@@ -103,3 +104,13 @@ def Deep():
     print(f"  - 경과년수: {input_age}년")
     print(f"  - 층: {input_floor}층")
     print(f"\n**예측 적정 호가: {predicted_price:,.0f}만원**")
+    result = {
+        '지역' : input_sigungu,
+        '전용면적' : f'{input_area}㎡',
+        '건축년도' : f'{input_year_built}년',
+        '경과년수' : f'{input_age}년',
+        '층': f'{input_floor}층',
+        '예측 적정 호가':f'{predicted_price:,.0f}만원**'
+
+    }
+    return result
