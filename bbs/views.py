@@ -4,7 +4,7 @@ from bbs.dao.bbs_models import Bbs
 from django.core.paginator import Paginator
 from bbs.db.bbs_mysql import get_bbs_with_rownum,get_total_bbs_count
 # from bbs.models import MySQLDB  
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,TemplateView
 
 
 
@@ -272,3 +272,21 @@ class BbsDetailView(DetailView):
 #         print(" 호출 했다. ")
 #         context['push_result'] = send_test_push(self.request)
 #         return context
+
+
+from biz.real_estate_price_forecast import Deep
+class Deeplearing(TemplateView):
+    template_name = 'bbs/deeplearing.html'  # 상세보기 템플릿
+    # context_object_name = 'bbs'             # 템플릿에서 쓸 변수명
+    print(" Deeplearing called ================= ")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['file_list'] = self.object.files.all()  # related_name='files' 이용
+        # print(f"file ==={context['file_list']}")
+        # for f in self.object.files.all():
+        #  print(f.orig_name , f.file)
+        print(" Deeplearing Start == ")
+        Deep()
+        print(" Deeplearing E == ")
+        return context

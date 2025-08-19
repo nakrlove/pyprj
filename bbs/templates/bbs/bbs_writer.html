@@ -66,7 +66,8 @@
     </style>
 </head>
 <body>
-    <form action="{% if bbs %}{% url 'bbs:update' bbs.pk %}{% else %}{% url 'bbs:write' %}{% endif %}" enctype="multipart/form-data" method="post">
+    <!-- <form action="{% if bbs %}{% url 'bbs:update' bbs.pk %}{% else %}{% url 'bbs:write' %}{% endif %}" enctype="multipart/form-data" method="post"> -->
+    <form  enctype="multipart/form-data" method="post"></form>
      {% csrf_token %}
    
     <div class="card">
@@ -93,7 +94,20 @@
            {% endfor %} <p></p>
            <input type="file" name="file" multiple>
         </div>
-        <div class="btn-w"><button type="submit"> {% if bbs %}수정{% else %}작성{% endif %}</button></div>
+        <!-- <div class="btn-w"><button type="submit" > 딥러닝 호출 테스트</button></div>
+        <div class="btn-w"><button type="submit"> {% if bbs %}수정{% else %}작성{% endif %}</button></div> -->
+    
+        <div class="btn-w">
+            <button type="submit" formaction="{% url 'bbs:deeplearning' %}">딥러닝 호출 테스트</button>
+        </div>
+        
+        <div class="btn-w">
+            <button type="submit" formaction="{% if bbs %}{% url 'bbs:update' bbs.pk %}{% else %}{% url 'bbs:write' %}{% endif %}">
+            {% if bbs %}수정{% else %}작성{% endif %}
+            </button>
+        </div>
+
+
     </div>
     </form>
 </body>
