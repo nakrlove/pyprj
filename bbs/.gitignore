@@ -25,6 +25,7 @@ db.sqlite3
 */migrations/*.pyc
 */migrations/*.py
 !*/migrations/__init__.py
+bbs//migrations
 
 # Pipenv, Poetry, venv
 Pipfile.lock
