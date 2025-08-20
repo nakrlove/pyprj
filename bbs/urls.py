@@ -14,21 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
-from bbs.views import BbsLV
-from .views import BbsCreateView, BbsUpdateView,BbsDetailView,Deeplearing
+from . import views 
+
 app_name = 'bbs'
 urlpatterns = [
+    # 첫 페이지를 MainPage 뷰로 연결
+    path('', views.MainPage.as_view() , name="index"),
     
-    path('list/', BbsLV.as_view() , name="index"),
-    # path('write/', BbsLV.as_view() , name="write"),
+    # 게시판 목록 페이지는 별도 URL('list/')로 분리
+    path('list/', views.BbsLV.as_view() , name="list"),
+    
+    # 기존 게시판 URL 패턴
+    path('write/', views.BbsCreateView.as_view(), name='write'),
+    path('<int:pk>/update/', views.BbsUpdateView.as_view(), name='update'),
+    path('<int:pk>/', views.BbsDetailView.as_view(), name='detail'),
+    path("deeplearning/", views.Deeplearing.as_view(), name="deeplearning"),
 
-
-    path('write/', BbsCreateView.as_view(), name='write'),
-    path('<int:pk>/update/', BbsUpdateView.as_view(), name='update'),
-    # path('write/<int:pk>/', BbsUpdateView.as_view(), name='edit'),
-    path('<int:pk>/', BbsDetailView.as_view(), name='detail'),
-    path("deeplearning/", Deeplearing.as_view(), name="deeplearning"),
-
+    # 새로운 페이지를 위한 URL 패턴
+    path('monthly/', views.MonthlyForecastPage.as_view(), name='monthly_forecast'),
+    path('district/', views.DistrictForecastPage.as_view(), name='district_forecast'),
+    path('price-range/', views.PriceRangeForecastPage.as_view(), name='price_range_forecast'),
+    path('deposit/', views.DepositForecastPage.as_view(), name='deposit_forecast'),
 ]

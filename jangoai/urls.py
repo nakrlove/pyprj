@@ -20,7 +20,8 @@ from django.urls import path,include
 # from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('bbs/',include('bbs.urls')),
+    path('', include('bbs.urls')),
+    # path('bbs/',include('bbs.urls')),
     # path('send_push/', Push.as_view(), name='send_push'),
     
 ]

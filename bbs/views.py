@@ -295,3 +295,23 @@ class Deeplearing(TemplateView):
         retsult = engine()  # 예: 딥러닝 호출
         print("Deeplearing POST End == ")
         return render(request, self.template_name, {'result': retsult}) # 원하는 응답으로 바꿀 수 있음    
+    
+
+
+#####################################
+# 새로운 예측 페이지 뷰
+#####################################
+class MonthlyForecastPage(TemplateView):
+    template_name = 'bbs/monthly_forecast.html'
+
+class DistrictForecastPage(TemplateView):
+    template_name = 'bbs/district_forecast.html'
+
+class PriceRangeForecastPage(TemplateView):
+    template_name = 'bbs/price_range_forecast.html'
+
+class DepositForecastPage(TemplateView):
+    template_name = 'bbs/deposit_forecast.html'
+
+class MainPage(TemplateView):
+    template_name = 'bbs/main_page.html'
