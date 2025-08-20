@@ -1,0 +1,82 @@
+/* bbs/static/bbs/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #0056b3;
+}
+
+nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #007bff;
+    padding: 10px 15px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 50px;
+    color: #777;
+}
+
+
+.main-links-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 가운데 정렬 */
+    gap: 20px; /* 링크 사이 간격 */
+    margin-top: 250px; /* 상단 간격 */
+}
+
+.main-link {
+    display: inline-block;
+    flex-basis: 200px; /* 최소 너비 */
+    padding: 40px 20px; /* 상하 패딩 */
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 10px;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box; /* padding, border가 width에 포함되도록 */
+}
+
+.main-link:hover {
+    background-color: #0056b3;
+}
+
+/* 화면 너비가 768px 이하일 경우 (모바일 등) */
+@media (max-width: 768px) {
+    .main-link {
+        width: calc(100% - 20px); /* 한 줄에 하나씩 배치 */
+    }
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    flex: 1; 
+}
+
+footer {
+    margin-top: auto; 
+}
