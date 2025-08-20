@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}부동산 예측 서비스{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'bbs/style.css' %}">
+</head>
+<body>
+    <div class="content-wrapper">
+        <header>
+            <h1>부동산 전/월세 예측 서비스</h1>
+            {% block navigation %}
+            <nav>
+                <a href="{% url 'bbs:monthly_forecast' %}">월별 예측 (대)</a> |
+                <a href="{% url 'bbs:district_forecast' %}">구별 예측 (세)</a> |
+                <a href="{% url 'bbs:price_range_forecast' %}">가격대별 예측 (재)</a> |
+                <a href="{% url 'bbs:deposit_forecast' %}">전/월세 예측 (경)</a>
+            </nav>
+            {% endblock %}
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>    
+    <footer>
+        <p>&copy; 2025 Team2 Project. All rights reserved.</p>
+    </footer>
+</body>
+</html>

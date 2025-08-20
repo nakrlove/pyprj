@@ -1,0 +1,15 @@
+{% extends 'bbs/base.html' %}
+
+{% block title %}메인 페이지{% endblock %}
+
+{% block navigation %}
+{% endblock %}
+
+{% block content %}
+<div class="main-links-container">
+    <a href="{% url 'bbs:monthly_forecast' %}" class="main-link">월별 예측 (대)</a>
+    <a href="{% url 'bbs:district_forecast' %}" class="main-link">구별 예측 (세)</a>
+    <a href="{% url 'bbs:price_range_forecast' %}" class="main-link">가격대별 예측 (재)</a>
+    <a href="{% url 'bbs:deposit_forecast' %}" class="main-link">전/월세 예측 (경)</a>
+</div>
+{% endblock %}
