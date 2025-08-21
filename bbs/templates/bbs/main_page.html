@@ -1,15 +1,23 @@
 {% extends 'bbs/base.html' %}
+{% load static %}
 
 {% block title %}부동산 전/월세 예측 서비스{% endblock %}
+
+{% block header %}
+{% endblock %}
 
 {% block navigation %}
 {% endblock %}
 
 {% block content %}
-<div class="main-links-container">
-    <a href="{% url 'bbs:monthly_forecast' %}" class="main-link">월별 예측 (대)</a>
-    <a href="{% url 'bbs:district_forecast' %}" class="main-link">구별 예측 (세)</a>
-    <a href="{% url 'bbs:price_range_forecast' %}" class="main-link">가격대별 예측 (재)</a>
-    <a href="{% url 'bbs:deposit_forecast' %}" class="main-link">전/월세 예측 (경)</a>
+<!-- 제목과 버튼들을 중앙에 배치할 컨테이너 -->
+<div class="main-container">
+    <h1 class="main-title">부동산 전/월세 예측 서비스</h1>
+    <div class="main-links-container vertical-buttons">
+        <a href="{% url 'bbs:monthly_forecast' %}" class="main-link">월별 예측</a>
+        <a href="{% url 'bbs:district_forecast' %}" class="main-link">구별 예측</a>
+        <a href="{% url 'bbs:price_range_forecast' %}" class="main-link">가격대별 예측</a>
+        <a href="{% url 'bbs:deposit_forecast' %}" class="main-link">전/월세 예측</a>
+    </div>
 </div>
 {% endblock %}
