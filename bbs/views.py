@@ -16,6 +16,11 @@ from django.db import transaction
 from .models import Bbs
 from bbs.dao.bbs_models import BbsFile 
 
+def index(request):
+    return render(request, 'bbs/main_page.html')
+
+
+
 #####################################
 # 게시판 목록 조회
 #####################################

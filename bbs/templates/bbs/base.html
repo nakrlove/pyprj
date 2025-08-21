@@ -13,6 +13,9 @@
             <h1>부동산 전/월세 예측 서비스</h1>
             {% block navigation %}
             <nav>
+                {% if request.path != '/' %}
+                <a href="{% url 'index' %}">메인</a> |
+                {% endif %} 
                 <a href="{% url 'bbs:monthly_forecast' %}">월별 예측 (대)</a> |
                 <a href="{% url 'bbs:district_forecast' %}">구별 예측 (세)</a> |
                 <a href="{% url 'bbs:price_range_forecast' %}">가격대별 예측 (재)</a> |
