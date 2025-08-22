@@ -42,6 +42,12 @@
         </form>
     </div>
 
+    <!-- 로딩 화면 -->
+    <div id="loading-screen" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>🔮 예측중입니다...</p>
+    </div>
+
     <!-- 결과 영역 -->
     <div id="forecast-results" class="hidden">
         <h2 class="text-xl font-semibold text-teal-800 mb-4">📊 예측 결과 분석</h2>
@@ -130,6 +136,24 @@
                 }
             }
         });
+    }
+
+    // 로딩 보이기
+    function showLoading() {
+        const loadingScreen = document.getElementById("loading-screen");
+        if (loadingScreen) {
+            loadingScreen.classList.remove("hidden");
+            loadingScreen.classList.add("active");
+        }
+    }
+
+    // 로딩 숨기기
+    function hideLoading() {
+        const loadingScreen = document.getElementById("loading-screen");
+        if (loadingScreen) {
+            loadingScreen.classList.remove("active");
+            loadingScreen.classList.add("hidden");
+        }
     }
 </script>
 {% endblock %}
