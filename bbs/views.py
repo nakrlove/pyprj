@@ -312,8 +312,31 @@ class MonthlyForecastPage(TemplateView):
 class DistrictForecastPage(TemplateView):
     template_name = 'bbs/district_forecast.html'
 
+
+
+
+#####################################
+# 가격대별 예측 페이지 뷰 START
+#####################################
+from bbs.biz.price_range_forecast import resultData
 class PriceRangeForecastPage(TemplateView):
     template_name = 'bbs/price_range_forecast.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            # resultData() 함수를 호출하여 분석 결과를 가져옵니다.
+            analysis_result = resultData()
+            # context에 결과 딕셔너리 자체를 추가합니다. .items()는 제거합니다.
+            context['result'] = analysis_result
+        except Exception as e:
+            # 오류가 발생하면 오류 메시지를 context에 추가합니다.
+            context['result'] = {'ERROR': str(e)}
+        return context
+    
+#####################################
+# 가격대별 예측 페이지 뷰 END
+#####################################
 
 class DepositForecastPage(TemplateView):
     template_name = 'bbs/deposit_forecast.html'
