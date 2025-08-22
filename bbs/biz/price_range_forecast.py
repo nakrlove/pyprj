@@ -254,29 +254,4 @@ plt.tight_layout()
 plt.show()
 
 
-# %%
-#     # 막대 그래프용 데이터 프레임 생성
-#     bar_data = gu_data.copy()
-    
-#     # 예측 데이터 추가
-#     forecast_df = forecast_results[gu]
-#     bar_data = pd.concat([bar_data, forecast_df.rename(columns={'yhat': 'y'})], ignore_index=True)
-    
-#     # 예측 데이터 구분용 컬럼 생성
-#     bar_data['type'] = '실제'
-#     bar_data.loc[bar_data['ds'].isin(forecast_df['ds']), 'type'] = '예측'
-    
-#     # 그래프 시각화 (막대 그래프)
-#     ax = plt.subplot(i + 1)
-#     sns.barplot(x=bar_data['ds'].dt.strftime('%Y-%m'), y=bar_data['y'], hue=bar_data['type'], dodge=False, ax=ax)
 
-#     ax.set_title(f'{gu} 거래량 예측', fontsize=20)
-#     ax.set_xlabel('날짜', fontsize=12)
-#     ax.set_ylabel('거래 건수', fontsize=12)
-#     ax.legend(title='데이터 유형', loc='upper left', fontsize=10)
-#     ax.tick_params(axis='x', rotation=45, labelsize=10)
-
-# plt.tight_layout()
-# plt.show()
-
-# %%
