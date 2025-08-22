@@ -12,13 +12,13 @@ body {
     padding-bottom: 60px; /* ✅ footer와 겹치지 않도록 */
 }
 
-/* 메인 컨테이너 */
+/* 메인 컨테이너 (첫 페이지) */
 .main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex: 1; /* 화면 중앙 정렬 */
+    justify-content: center;   /* ✅ 세로 중앙 정렬 */
+    flex: 1; 
     text-align: center;
     padding: 40px 20px;
 }
@@ -67,7 +67,7 @@ body {
     background-color: #1e40af; /* hover 시 진한 파랑 */
 }
 
-/* 풋터 - 항상 하단 고정 (투명 배경 + 가독성 강화) */
+/* 풋터 - 항상 하단 고정 */
 footer {
     position: fixed;
     bottom: 0;
@@ -75,11 +75,11 @@ footer {
     width: 100%;
     text-align: center;
     padding: 15px 10px;
-    background: transparent; /* ✅ 투명 */
-    color: #555; /* 글자색만 */
+    background: transparent;
+    color: #555;
     font-size: 0.9rem;
     z-index: 100;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.6); /* ✅ 대비 향상 */
+    text-shadow: 0 1px 2px rgba(255,255,255,0.6);
 }
 
 footer a {
@@ -89,7 +89,7 @@ footer a {
 }
 
 footer a:hover {
-    color: #2563eb; /* hover 시 포인트 색 */
+    color: #2563eb;
 }
 
 /* 반응형 */
@@ -120,8 +120,8 @@ footer a:hover {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    opacity: 0; /* ✅ 처음은 안 보임 */
-    transition: opacity 0.3s ease-in-out; /* ✅ fade 효과 */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
 #loading-screen.active {
@@ -144,4 +144,66 @@ footer a:hover {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* 📌 price-range 페이지 전용 스타일 */
+.content-wrapper {
+    max-width: 800px;         
+    margin: 0 auto;           
+    padding: 20px;
+    text-align: center;       
+
+    /* ✅ 세로+가로 중앙 정렬 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   
+    align-items: center;       
+    min-height: calc(100vh - 100px); /* nav + footer 공간 제외 */
+}
+
+/* 네비게이션 아래 여백 */
+nav {
+    margin-bottom: 20px;
+}
+
+/* 폼 전체 가운데 정렬 */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* 숫자 입력창 */
+form input[type="number"] {
+    width: 260px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: right;
+    font-size: 1rem;
+}
+
+/* 버튼 */
+form button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background-color: #2563eb;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+form button:hover {
+    background-color: #1e40af;
+}
+
+/* 섹션 제목 */
+h2, h3 {
+    margin: 20px 0 10px;
+    color: #2c3e50;
 }
