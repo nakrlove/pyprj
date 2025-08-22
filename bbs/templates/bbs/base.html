@@ -3,36 +3,66 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}부동산 예측 서비스{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ai-X APT | 부동산 전월세 가격 예측 서비스">
+    <meta name="author" content="Ai-X APT Team">
+    <title>{% block title %}Ai-X APT 부동산 예측 서비스{% endblock %}</title>
 
-    <link rel="stylesheet" href="{% static 'bbs/style.css' %}">
+    <link rel="stylesheet" href="{% static 'bbs/css/style.css' %}">
 </head>
 <body>
+    <!-- 1. 로딩 화면 -->
+    <div id="loading-screen" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>예측 중입니다... 잠시만 기다려주세요</p>
+    </div>
+
     <div class="content-wrapper">
         <header>
             {% block header %}
-            <h1>부동산 전/월세 예측 서비스</h1>
+            {% if request.path != '/' %}
+                <h1>Ai-X APT 부동산 전/월세 예측 서비스</h1>
+            {% endif %}
             {% endblock %}
-            
+
             {% block navigation %}
             <nav>
                 {% if request.path != '/' %}
-                <a href="{% url 'index' %}">메인</a> |
-                {% endif %} 
-                <a href="{% url 'bbs:monthly_forecast' %}">월별 예측</a> |
-                <a href="{% url 'bbs:district_forecast' %}">구별 예측</a> |
-                <a href="{% url 'bbs:price_range_forecast' %}">가격대별 예측</a> |
-                <a href="{% url 'bbs:deposit_forecast' %}">전/월세 예측</a>
+                    <a href="{% url 'bbs:index' %}">메인</a> |
+                {% endif %}
+                <a href="{% url 'bbs:price_range_forecast' %}">예측하기</a>
             </nav>
             {% endblock %}
         </header>
+
         <main>
             {% block content %}
             {% endblock %}
         </main>
     </div>    
+
+    <!-- 2. 풋터 -->
     <footer>
-        <p>&copy; 2025 Team2 Project. All rights reserved.</p>
+        <a href="{% url 'bbs:index' %}">© 2025 Ai-X APT</a>
     </footer>
+
+    <!-- 3. 로딩 화면 제어 JS -->
+    <script>
+        function showLoading() {
+            const screen = document.getElementById('loading-screen');
+            if (screen) {
+                screen.classList.remove('hidden');
+                screen.classList.add('active');
+            }
+        }
+        function hideLoading() {
+            const screen = document.getElementById('loading-screen');
+            if (screen) {
+                screen.classList.remove('active');
+                // fade-out 부드럽게 → 약간의 delay 후 hidden 처리
+                setTimeout(() => screen.classList.add('hidden'), 300);
+            }
+        }
+    </script>
 </body>
 </html>

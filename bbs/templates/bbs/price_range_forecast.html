@@ -1,8 +1,10 @@
 {% extends 'bbs/base.html' %}
+{% load static %}
 
 {% block title %}가격대별 전/월세 예측{% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
 <style>
     /* Overall page layout */
     .container {
@@ -266,4 +268,158 @@ for gu in gu_list:
     {% endif %}
 </div>
 
+=======
+<div class="container mx-auto p-8 bg-white shadow-xl rounded-xl max-w-4xl mt-10">
+    <!-- 제목 -->
+    <h1 class="text-3xl font-bold text-center text-teal-600 mb-8">💰 가격대별 전/월세 예측</h1>
+    <p class="text-center text-gray-700 mb-6">
+        원하는 <strong>전세/월세 가격대</strong>를 입력하면,<br>
+        해당 범위에 속하는 주택의 특성과 미래 가치를 예측합니다.
+    </p>
+
+    <!-- 입력 폼 -->
+    <div class="bg-teal-50 p-6 rounded-lg shadow-inner mb-8">
+        <h2 class="text-xl font-semibold text-teal-800 mb-4">📌 예측 가격대 설정</h2>
+        <form id="price-forecast-form" method="post" action="{% url 'bbs:price_range_forecast' %}">
+            {% csrf_token %}
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- 최소 -->
+                <div class="flex-1">
+                    <label for="price-min" class="block text-gray-700 font-medium mb-1">최소 가격 (만원)</label>
+                    <input type="number" id="price-min" name="price_min" required
+                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500"
+                           placeholder="예: 30000">
+                </div>
+                <!-- 최대 -->
+                <div class="flex-1">
+                    <label for="price-max" class="block text-gray-700 font-medium mb-1">최대 가격 (만원)</label>
+                    <input type="number" id="price-max" name="price_max" required
+                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500"
+                           placeholder="예: 50000">
+                </div>
+            </div>
+
+            <!-- 버튼 -->
+            <button type="submit" onclick="showLoading()" 
+                    class="mt-6 w-full py-3 px-4 bg-teal-600 text-white font-semibold rounded-md shadow-md hover:bg-teal-700 transition">
+                🔮 예측하기
+            </button>
+        </form>
+    </div>
+
+    <!-- 로딩 화면 -->
+    <div id="loading-screen" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>🔮 예측중입니다...</p>
+    </div>
+
+    <!-- 결과 영역 -->
+    <div id="forecast-results" class="hidden">
+        <h2 class="text-xl font-semibold text-teal-800 mb-4">📊 예측 결과 분석</h2>
+
+        <!-- 차트 -->
+        <div class="bg-gray-100 p-6 rounded-lg shadow-inner">
+            <canvas id="priceRangeChart"></canvas>
+        </div>
+
+        <!-- 평균 -->
+        <div class="mt-4 p-4 text-center bg-teal-100 text-teal-800 rounded-lg">
+            <p><strong>예측된 평균 가격:</strong> 
+               <span id="predicted-price" class="text-2xl font-bold"></span> 만원</p>
+        </div>
+
+        <!-- 상세 설명 -->
+        <div class="mt-4 p-4 bg-gray-50 border rounded-lg">
+            <p id="result-text" class="text-gray-800"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 폼 제출 이벤트
+    document.getElementById('price-forecast-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // 입력값
+        const minPrice = parseInt(document.getElementById('price-min').value);
+        const maxPrice = parseInt(document.getElementById('price-max').value);
+        const avgPrice = Math.round((minPrice + maxPrice) / 2);
+
+        // 요소들
+        const resultsDiv = document.getElementById('forecast-results');
+        const predictedPriceElement = document.getElementById('predicted-price');
+        const resultText = document.getElementById('result-text');
+
+        // 예시 데이터 (→ 실제는 서버 응답으로 대체)
+        const data = {
+            labels: ['입력 최소값', '평균값', '입력 최대값'],
+            datasets: [{
+                label: '예상 가격 (만원)',
+                data: [minPrice, avgPrice, maxPrice],
+                backgroundColor: ['#5eead4', '#2dd4bf', '#14b8a6']
+            }]
+        };
+
+        // 차트 렌더링
+        renderChart(data);
+
+        // 텍스트 결과
+        predictedPriceElement.textContent = avgPrice.toLocaleString();
+        resultText.innerHTML = `
+            입력하신 <strong>${minPrice}만원 ~ ${maxPrice}만원</strong> 범위는<br>
+            평균 <strong>${avgPrice}만원</strong> 수준으로 예상됩니다.<br><br>
+            ✅ 교통이 편리한 지역<br>
+            ✅ 상권 발달<br>
+            ✅ 10년 이내 신축 아파트 가능성 ↑
+        `;
+
+        // 결과 표시
+        resultsDiv.classList.remove('hidden');
+        hideLoading();
+    });
+
+    // 차트 함수
+    function renderChart(data) {
+        const ctx = document.getElementById('priceRangeChart').getContext('2d');
+        if (window.priceRangeChartInstance) {
+            window.priceRangeChartInstance.destroy();
+        }
+        window.priceRangeChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '가격대별 예상 결과' }
+                },
+                scales: {
+                    y: { beginAtZero: false, title: { display: true, text: '가격 (만원)' } }
+                }
+            }
+        });
+    }
+
+    // 로딩 보이기
+    function showLoading() {
+        const loadingScreen = document.getElementById("loading-screen");
+        if (loadingScreen) {
+            loadingScreen.classList.remove("hidden");
+            loadingScreen.classList.add("active");
+        }
+    }
+
+    // 로딩 숨기기
+    function hideLoading() {
+        const loadingScreen = document.getElementById("loading-screen");
+        if (loadingScreen) {
+            loadingScreen.classList.remove("active");
+            loadingScreen.classList.add("hidden");
+        }
+    }
+</script>
+>>>>>>> 7f26a98dffa9cf835af6ea79046f57e8a94510b8
 {% endblock %}
