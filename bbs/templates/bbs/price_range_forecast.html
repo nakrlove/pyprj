@@ -1,7 +1,125 @@
 {% extends 'bbs/base.html' %}
+{% load static %}
 
 {% block title %}가격대별 전/월세 예측{% endblock %}
 
 {% block content %}
-<h1>가격대별 전/월세 예측 페이지입니다.</h1>
+<div class="container mx-auto p-8 bg-white shadow-xl rounded-xl max-w-4xl mt-10">
+    <h1 class="text-3xl font-bold text-center text-teal-600 mb-8">가격대별 전/월세 예측</h1>
+    <p class="text-center text-gray-700 mb-6">
+        원하는 전세 또는 월세 가격대를 입력하면, 해당 가격대에 속하는 주택의 특성과 미래 가치를 예측합니다.
+    </p>
+
+    <!-- 예측 입력 폼 -->
+    <div class="bg-teal-50 p-6 rounded-lg shadow-inner mb-8">
+        <h2 class="text-xl font-semibold text-teal-800 mb-4">예측 가격대 설정</h2>
+        <form id="price-forecast-form" method="post" action="{% url 'bbs:price_range_forecast' %}">
+            {% csrf_token %}
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <label for="price-min" class="block text-gray-700 font-medium mb-1">최소 가격 (만원):</label>
+                    <input type="number" id="price-min" name="price_min" required
+                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" placeholder="예: 30000">
+                </div>
+                <div class="flex-1">
+                    <label for="price-max" class="block text-gray-700 font-medium mb-1">최대 가격 (만원):</label>
+                    <input type="number" id="price-max" name="price_max" required
+                           class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-teal-500" placeholder="예: 50000">
+                </div>
+            </div>
+            <button type="submit" onclick="showLoading()" class="mt-6 w-full py-2 px-4 bg-teal-600 text-white font-semibold rounded-md shadow-md hover:bg-teal-700 transition-colors">
+                예측하기
+            </button>
+        </form>
+    </div>
+
+    <!-- 예측 결과 시각화 -->
+    <div id="forecast-results" class="hidden">
+        <h2 class="text-xl font-semibold text-teal-800 mb-4">예측 결과 분석</h2>
+        <div class="bg-gray-100 p-6 rounded-lg shadow-inner">
+            <canvas id="priceRangeChart"></canvas>
+        </div>
+        <div class="mt-4 p-4 text-center bg-teal-100 text-teal-800 rounded-lg">
+            <p><strong>예측된 평균 가격:</strong> <span id="predicted-price" class="text-2xl font-bold"></span>만원</p>
+        </div>
+        <div class="mt-4 p-4 bg-gray-50 border rounded-lg">
+            <p id="result-text" class="text-gray-800"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 로딩 오버레이 제거
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.remove('visible');
+        }
+    });
+
+    // 폼 제출 이벤트 처리
+    document.getElementById('price-forecast-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const form = event.target;
+        const formData = new FormData(form);
+        const minPrice = parseInt(formData.get('price_min'));
+        const maxPrice = parseInt(formData.get('price_max'));
+        const avgPrice = Math.round((minPrice + maxPrice) / 2);
+
+        const resultsDiv = document.getElementById('forecast-results');
+        const resultText = document.getElementById('result-text');
+        const predictedPriceElement = document.getElementById('predicted-price');
+
+        // 예시 데이터 (실제는 서버 응답으로 대체)
+        const data = {
+            labels: ['입력 최소값', '평균값', '입력 최대값'],
+            datasets: [{
+                label: '예상 가격 (만원)',
+                data: [minPrice, avgPrice, maxPrice],
+                backgroundColor: ['#5eead4', '#2dd4bf', '#14b8a6']
+            }]
+        };
+
+        renderChart(data);
+
+        predictedPriceElement.textContent = avgPrice.toLocaleString();
+        resultText.innerHTML = `
+            입력하신 <strong>${minPrice}만원 ~ ${maxPrice}만원</strong> 가격대의 주택은 
+            <strong>평균 ${avgPrice}만원</strong> 수준으로 예상됩니다.<br>
+            특징: 교통이 편리한 지역, 상권 발달, 10년 이내 신축 아파트 가능성 ↑
+        `;
+        resultsDiv.classList.remove('hidden');
+    });
+
+    // 차트 렌더링 함수
+    function renderChart(data) {
+        const ctx = document.getElementById('priceRangeChart').getContext('2d');
+
+        if (window.priceRangeChartInstance) {
+            window.priceRangeChartInstance.destroy();
+        }
+
+        window.priceRangeChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '가격대별 예상 결과' }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: { display: true, text: '가격 (만원)' }
+                    }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

@@ -3,22 +3,31 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}부동산 예측 서비스{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'bbs/style.css' %}">
 </head>
 <body>
+    <!-- 1. 로딩 화면 -->
+    <div id="loading-screen" class="hidden">
+        <div class="loading-spinner"></div>
+        <p>예측 중입니다... 잠시만 기다려주세요</p>
+    </div>
+
     <div class="content-wrapper">
         <header>
             {% block header %}
-            <h1>부동산 전/월세 예측 서비스</h1>
+            {% if request.path != '/' %}
+                <h1>부동산 전/월세 예측 서비스</h1>
+            {% endif %}
             {% endblock %}
-            
+
             {% block navigation %}
             <nav>
                 {% if request.path != '/' %}
-                <a href="{% url 'index' %}">메인</a> |
-                {% endif %} 
+                    <a href="{% url 'bbs:index' %}">메인</a> |
+                {% endif %}
                 <a href="{% url 'bbs:monthly_forecast' %}">월별 예측</a> |
                 <a href="{% url 'bbs:district_forecast' %}">구별 예측</a> |
                 <a href="{% url 'bbs:price_range_forecast' %}">가격대별 예측</a> |
@@ -26,13 +35,25 @@
             </nav>
             {% endblock %}
         </header>
+
         <main>
             {% block content %}
             {% endblock %}
         </main>
     </div>    
+
     <footer>
-        <p>&copy; 2025 Team2 Project. All rights reserved.</p>
+        <a href="{% url 'bbs:index' %}">© 2025 AiX_APT</a>
     </footer>
+
+    <!-- 2. 로딩 화면 제어 JS -->
+    <script>
+        function showLoading() {
+            document.getElementById('loading-screen')?.classList.remove('hidden');
+        }
+        function hideLoading() {
+            document.getElementById('loading-screen')?.classList.add('hidden');
+        }
+    </script>
 </body>
 </html>

@@ -1,30 +1,8 @@
-"""
-URL configuration for jangoai project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path,include
-from bbs import views
-# from bbs.views import Push
-
+from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('bbs/', include('bbs.urls')),
-    # path('bbs/',include('bbs.urls')),
-    # path('send_push/', Push.as_view(), name='send_push'),
-    
+    path("admin/", admin.site.urls),
+    # bbs 앱의 URL을 루트("/")에 연결
+    path("", include("bbs.urls")),
 ]
