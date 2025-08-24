@@ -183,37 +183,37 @@ class MonthlyForecastPage(TemplateView):
 class DistrictForecastPage(TemplateView):
     template_name = 'bbs/district_forecast.html'
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
 
 
 
-#####################################
-# 가격대별 예측 페이지 뷰 START
-#####################################
-from bbs.biz.price_range_forecast import resultData
-=======
-    def post(self, request, *args, **kwargs):
-        district = request.POST.get("district")
+# #####################################
+# # 가격대별 예측 페이지 뷰 START
+# #####################################
+# from bbs.biz.price_range_forecast import resultData
+# =======
+#     def post(self, request, *args, **kwargs):
+#         district = request.POST.get("district")
 
-        result = {
-            "labels": ["강남구", "서초구", "송파구"],
-            "datasets": [{
-                "label": "예측 가격",
-                "data": [1200, 1100, 1050],
-                "borderColor": "rgb(255, 99, 132)",
-                "tension": 0.1
-            }]
-        }
-        predicted_price = result["datasets"][0]["data"][-1]
+#         result = {
+#             "labels": ["강남구", "서초구", "송파구"],
+#             "datasets": [{
+#                 "label": "예측 가격",
+#                 "data": [1200, 1100, 1050],
+#                 "borderColor": "rgb(255, 99, 132)",
+#                 "tension": 0.1
+#             }]
+#         }
+#         predicted_price = result["datasets"][0]["data"][-1]
 
-        return render(request, self.template_name, {
-            "result": result,
-            "predicted_price": predicted_price,
-            "district": district,
-        })
+#         return render(request, self.template_name, {
+#             "result": result,
+#             "predicted_price": predicted_price,
+#             "district": district,
+#         })
 
 
->>>>>>> 7f26a98dffa9cf835af6ea79046f57e8a94510b8
+# >>>>>>> 7f26a98dffa9cf835af6ea79046f57e8a94510b8
 class PriceRangeForecastPage(TemplateView):
     template_name = 'bbs/price_range_forecast.html'
     
