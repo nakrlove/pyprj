@@ -144,7 +144,7 @@ class Deeplearning(FormView):
     def form_valid(self, form):
         logger.debug("Deeplearning 실행 시작")
         try:
-            result = engine()  # ✅ 실제 함수 확인 필요
+            result = engine()  #실제 함수 확인 필요
         except Exception as e:
             logger.error(f"engine() 실행 오류: {e}")
             result = f"Error: {e}"
@@ -183,37 +183,11 @@ class MonthlyForecastPage(TemplateView):
 class DistrictForecastPage(TemplateView):
     template_name = 'bbs/district_forecast.html'
 
-<<<<<<< HEAD
-
-
 
 #####################################
 # 가격대별 예측 페이지 뷰 START
 #####################################
 from bbs.biz.price_range_forecast import resultData
-=======
-    def post(self, request, *args, **kwargs):
-        district = request.POST.get("district")
-
-        result = {
-            "labels": ["강남구", "서초구", "송파구"],
-            "datasets": [{
-                "label": "예측 가격",
-                "data": [1200, 1100, 1050],
-                "borderColor": "rgb(255, 99, 132)",
-                "tension": 0.1
-            }]
-        }
-        predicted_price = result["datasets"][0]["data"][-1]
-
-        return render(request, self.template_name, {
-            "result": result,
-            "predicted_price": predicted_price,
-            "district": district,
-        })
-
-
->>>>>>> 7f26a98dffa9cf835af6ea79046f57e8a94510b8
 class PriceRangeForecastPage(TemplateView):
     template_name = 'bbs/price_range_forecast.html'
     
@@ -229,10 +203,9 @@ class PriceRangeForecastPage(TemplateView):
             context['result'] = {'ERROR': str(e)}
         return context
     
-#####################################
-# 가격대별 예측 페이지 뷰 END
-#####################################
-
+    #####################################
+    # 가격대별 예측 페이지 뷰 END
+    #####################################
     def post(self, request, *args, **kwargs):
         price_range = request.POST.get("price_range")
 
