@@ -179,19 +179,13 @@ class MonthlyForecastPage(TemplateView):
             "month": month,
         })
 
-
-class DistrictForecastPage(TemplateView):
-    template_name = 'bbs/district_forecast.html'
-
-<<<<<<< HEAD
-
-
-
 #####################################
 # 가격대별 예측 페이지 뷰 START
 #####################################
 from bbs.biz.price_range_forecast import resultData
-=======
+class DistrictForecastPage(TemplateView):
+    template_name = 'bbs/district_forecast.html'
+
     def post(self, request, *args, **kwargs):
         district = request.POST.get("district")
 
@@ -213,7 +207,7 @@ from bbs.biz.price_range_forecast import resultData
         })
 
 
->>>>>>> 7f26a98dffa9cf835af6ea79046f57e8a94510b8
+
 class PriceRangeForecastPage(TemplateView):
     template_name = 'bbs/price_range_forecast.html'
     
