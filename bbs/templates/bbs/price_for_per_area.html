@@ -85,10 +85,10 @@
         <div>
           <label for="modelSelect">선택항목</label><br />
           <select id="modelSelect" aria-label="모델 선택">
-            <option>RandomForestRegressor</option>
-            <option>LinearRegression</option>
-            <option>Decision Tree Regression</option>
-            <option>Gradient Boosting Regression</option>
+            <option value="3">RandomForestRegressor</option>
+            <option value="1">LinearRegression</option>
+            <option value="2">Decision Tree Regression</option>
+            <option value="4">Gradient Boosting Regression</option>
           </select>
         </div>
         <div>
@@ -115,15 +115,15 @@
 
       <section class="card">
         <h2 class="result-title">백엔드 연동 예시 (fetch)</h2>
-<pre class="mono" style="white-space:pre-wrap; word-break:break-all; background:#0b1323; border:1px solid var(--border); padding:12px; border-radius:12px;">
-fetch(`/api/search?model=${'{선택된_모델'}`})
-  .then(r => r.json())
-  .then(data => renderResult(data))
-  .catch(err => showError(err));
-</pre>
+        <pre class="mono" style="white-space:pre-wrap; word-break:break-all; background:#0b1323; border:1px solid var(--border); padding:12px; border-radius:12px;">
+        fetch(`/api/search?model=${'{선택된_모델'}`})
+          .then(r => r.json())
+          .then(data => renderResult(data))
+          .catch(err => showError(err));
+        </pre>
       </section>
     </div>
-
+    {% csrf_token %}
     <div class="footer">© 2025 모델 조회 데모 · 단일 HTML 파일</div>
   </main>
 
@@ -164,7 +164,7 @@ fetch(`/api/search?model=${'{선택된_모델'}`})
     function renderTable(rows){
       console.log("############################")
       console.log(rows)
-  console.log("############################")
+       console.log("############################")
       const trs = rows.map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
       return `<table role="table" aria-label="모델 파라미터"><thead><tr><th>항목</th><th>값</th></tr></thead><tbody>${trs}</tbody></table>`;
     }
@@ -215,16 +215,37 @@ fetch(`/api/search?model=${'{선택된_모델'}`})
         </div>`;
     }
 
-    async function fetchModel() {
+    async function fetchModel(csrftoken) {
         try {
+            // const resultArea = document.getElementById('resultArea');
+            // const searchBtn  = document.getElementById('searchBtn');
+            const modelSel   = document.getElementById('modelSelect');
+            console.log(" CALL "+modelSel.value)
             // 서버 URL을 호출
-            const response = await fetch('/pfpa/api/');
-            
+            // const response = await fetch('/pfpa/api/');
+            const response = await fetch('/pfpa/api/', {
+                method: "POST",                      // POST 요청
+                headers: {
+                    "Content-Type": "application/json",  // JSON 형식 명시
+                    "X-CSRFToken": csrftoken
+
+                },
+                body: JSON.stringify({
+                    area: "강남구",
+                    year: 2025,
+                    month: 8,
+                    TYPE : modelSel.value
+                })   // JS 객체 → JSON 문자열 변환
+            });
+
+
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             
             // JSON 파싱
             const model = await response.json();
-            
+            console.log("############################")
+            console.log(JSON.stringify(model))
+            console.log("############################")
             // 렌더링
             renderResult(model);
 
@@ -249,9 +270,9 @@ fetch(`/api/search?model=${'{선택된_모델'}`})
       // } catch (e) {
       //   showError(e);
       // }
-      
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
       try{
-        fetchModel()
+        fetchModel(csrftoken)
       }catch(e){
         showError(e);
       }
