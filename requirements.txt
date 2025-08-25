@@ -4,10 +4,10 @@ astunparse==1.6.3
 catboost==1.2.8
 certifi==2025.8.3
 charset-normalizer==3.4.3
+cmdstanpy==1.2.5
 contourpy==1.3.2
 cycler==0.12.1
 django==5.2.5
-et-xmlfile==2.0.0
 filelock==3.19.1
 flatbuffers==25.2.10
 fonttools==4.59.1
@@ -17,10 +17,11 @@ google-pasta==0.2.0
 graphviz==0.21
 grpcio==1.74.0
 h5py==3.14.0
+holidays==0.79
 idna==3.10
+importlib-resources==6.5.2
 jinja2==3.1.6
 joblib==1.5.1
-jupyter
 keras==3.11.2
 kiwisolver==1.4.9
 libclang==18.1.1
@@ -50,14 +51,14 @@ nvidia-cusparselt-cu12==0.7.1
 nvidia-nccl-cu12==2.27.3
 nvidia-nvjitlink-cu12==12.8.93
 nvidia-nvtx-cu12==12.8.90
-openpyxl==3.1.5
 opt-einsum==3.4.0
 optree==0.17.0
 packaging==25.0
 pandas==2.3.1
 pillow==11.3.0
-pip==25.2
+pip==22.0.2
 plotly==6.3.0
+prophet==1.1.7
 protobuf==6.32.0
 pygments==2.19.2
 pyparsing==3.2.3
@@ -71,6 +72,7 @@ seaborn==0.13.2
 setuptools==59.6.0
 six==1.17.0
 sqlparse==0.5.3
+stanio==0.5.1
 sympy==1.14.0
 tensorboard==2.20.0
 tensorboard-data-server==0.7.2
@@ -78,6 +80,7 @@ tensorflow==2.20.0
 termcolor==3.1.0
 threadpoolctl==3.6.0
 torch==2.8.0
+tqdm==4.67.1
 triton==3.4.0
 typing-extensions==4.14.1
 tzdata==2025.2
