@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>모델 선택 · 조회 화면</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2b;
+      --panel-2: #0f1626;
+      --text: #eef2ff;
+      --muted: #9aa4bf;
+      --accent: #3b82f6;
+      --accent-2: #22d3ee;
+      --border: #1f2a44;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.5;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -20%, rgba(34,211,238,.15), transparent),
+                  radial-gradient(1000px 700px at -10% -30%, rgba(59,130,246,.18), transparent),
+                  var(--bg);
+      min-height: 100vh;
+    }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      backdrop-filter: blur(10px);
+      background: color-mix(in srgb, var(--panel) 80%, transparent);
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1080px; margin: 0 auto; padding: 14px 16px; }
+    .toolbar { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
+    .controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    label { font-size: 14px; color: var(--muted); }
+    select, button {
+      height: 40px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--panel-2); color: var(--text); padding: 0 12px; font-size: 14px;
+    }
+    select { min-width: 260px; }
+    button {
+      cursor: pointer; border: 1px solid transparent; font-weight: 600;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      transition: transform .08s ease, filter .2s ease;
+    }
+    button:hover { filter: brightness(1.05); }
+    button:active { transform: translateY(1px); }
+
+    main { padding: 16px; }
+    .grid { max-width: 1080px; margin: 16px auto; display: grid; gap: 16px; }
+    .card {
+      background: color-mix(in srgb, var(--panel) 92%, transparent);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px 16px; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+    .heading { font-size: 20px; font-weight: 800; margin: 0 0 6px; }
+    .sub { color: var(--muted); font-size: 14px; margin: 0 0 6px; }
+    .result-title { font-size: 18px; font-weight: 700; margin: 0 0 10px; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; color: #cbd5e1; background: #0b1323; padding: 2px 6px; border-radius: 6px; border: 1px solid var(--border); }
+
+    table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    th, td { border-bottom: 1px solid var(--border); padding: 10px 12px; text-align: left; font-size: 14px; }
+    th { background: #0d1528; color: #c7d2fe; }
+    tr:last-child td { border-bottom: none; }
+
+    .row { display: grid; grid-template-columns: 2fr 3fr; gap: 16px; }
+    @media (max-width: 820px){ .toolbar { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } }
+
+    .spinner { width: 20px; height: 20px; border: 3px solid #2a3657; border-top-color: #7aa2ff; border-radius: 50%; animation: spin 1s linear infinite; display:inline-block; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .muted { color: var(--muted); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono"; font-size: 12px; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .footer { color: var(--muted); font-size: 12px; text-align: center; padding: 24px 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container toolbar">
+      <div class="controls" role="group" aria-label="모델 선택 및 조회">
+        <div>
+          <label for="modelSelect">선택항목</label><br />
+          <select id="modelSelect" aria-label="모델 선택">
+            <option>RandomForestRegressor</option>
+            <option>LinearRegression</option>
+            <option>Decision Tree Regression</option>
+            <option>Gradient Boosting Regression</option>
+          </select>
+        </div>
+        <div>
+          <label class="invisible" style="opacity:0">조회</label><br/>
+          <button id="searchBtn" type="button" aria-label="조회버튼">조회</button>
+        </div>
+      </div>
+      <div class="muted mono">상단 고정 툴바 · 같은 페이지에 결과 표시</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <section class="card">
+        <h1 class="heading">모델 조회 데모</h1>
+        <p class="sub">상단에서 모델을 선택하고 <span class="kbd">조회</span>를 클릭하세요. 선택된 모델의 요약 정보와 예시 결과가 이 영역에 표시됩니다.</p>
+        <div id="resultArea" class="row" aria-live="polite" aria-busy="false">
+          <div class="card" style="background:transparent; box-shadow:none; padding:0; border:none">
+            <p class="muted">아직 조회 전입니다. 원하는 항목을 선택한 후 <strong>조회</strong>를 누르세요.</p>
+          </div>
+        </div>
+        <p class="hint">백엔드 연동 시 <span class="kbd">/api/search?model=모델명</span> 과 같이 연결하면 됩니다. 예시 코드는 하단 참고.</p>
+      </section>
+
+      <section class="card">
+        <h2 class="result-title">백엔드 연동 예시 (fetch)</h2>
+<pre class="mono" style="white-space:pre-wrap; word-break:break-all; background:#0b1323; border:1px solid var(--border); padding:12px; border-radius:12px;">
+fetch(`/api/search?model=${'{선택된_모델'}`})
+  .then(r => r.json())
+  .then(data => renderResult(data))
+  .catch(err => showError(err));
+</pre>
+      </section>
+    </div>
+
+    <div class="footer">© 2025 모델 조회 데모 · 단일 HTML 파일</div>
+  </main>
+
+  <script>
+    // 간단한 데모용 더미 데이터
+    const MODEL_INFO = {
+      'RandomForestRegressor': {
+        desc: '여러 결정 트리의 앙상블로 일반화 성능이 우수합니다. 범용 회귀에 강함.',
+        params: [ ['n_estimators', '100'], ['max_depth', '자동'], ['random_state', '42'] ],
+        metrics: { RMSE: 12.8, R2: 0.87 }
+      },
+      'LinearRegression': {
+        desc: '선형 가정 기반. 속도가 매우 빠르고 해석이 쉬움.',
+        params: [ ['fit_intercept', 'true'], ['n_jobs', '자동'], ['normalize', 'false'] ],
+        metrics: { RMSE: 18.3, R2: 0.72 }
+      },
+      'Decision Tree Regression': {
+        desc: '단일 트리 모델. 과적합 위험이 있으나 규칙 해석이 명확.',
+        params: [ ['max_depth', '8'], ['min_samples_split', '4'], ['random_state', '42'] ],
+        metrics: { RMSE: 16.9, R2: 0.77 }
+      },
+      'Gradient Boosting Regression': {
+        desc: '약한 학습기의 순차적 결합으로 높은 정확도를 달성.',
+        params: [ ['n_estimators', '200'], ['learning_rate', '0.06'], ['max_depth', '3'] ],
+        metrics: { RMSE: 11.9, R2: 0.90 }
+      }
+    };
+
+    const resultArea = document.getElementById('resultArea');
+    const searchBtn  = document.getElementById('searchBtn');
+    const modelSel   = document.getElementById('modelSelect');
+
+    function formatNumber(n){
+      try { return new Intl.NumberFormat('ko-KR', { maximumFractionDigits: 3 }).format(n); }
+      catch { return n; }
+    }
+
+    function renderTable(rows){
+      console.log("############################")
+      console.log(rows)
+  console.log("############################")
+      const trs = rows.map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+      return `<table role="table" aria-label="모델 파라미터"><thead><tr><th>항목</th><th>값</th></tr></thead><tbody>${trs}</tbody></table>`;
+    }
+
+    function renderResult(modelName){
+      const info = MODEL_INFO[modelName];
+      const paramsTable = renderTable(info.params);
+
+      // 간단한 가짜 예측 결과 데이터(차트 없이 표로 표시)
+      const demoRows = Array.from({length: 5}).map((_,i) => [
+        `샘플 #${i+1}`, `${formatNumber(100 + Math.random()*50)} (예측값)`
+      ]);
+      const demoTable = renderTable(demoRows);
+
+      resultArea.setAttribute('aria-busy', 'false');
+      resultArea.innerHTML = `
+        <div class="card">
+          <div class="result-title">선택 모델: ${modelName}</div>
+          <p class="muted">${info.desc}</p>
+          <h3 class="sub" style="margin-top:12px;">권장 하이퍼파라미터</h3>
+          ${paramsTable}
+        </div>
+        <div class="card">
+          <h3 class="sub">평가지표(데모)</h3>
+          ${renderTable([['RMSE', formatNumber(info.metrics.RMSE)], ['R²', info.metrics.R2]])}
+          <h3 class="sub" style="margin-top:12px;">예시 예측 결과</h3>
+          ${demoTable}
+        </div>
+      `;
+    }
+
+    function showLoading(){
+      resultArea.setAttribute('aria-busy', 'true');
+      resultArea.innerHTML = `
+        <div class="card" style="grid-column: 1/-1; text-align:center;">
+          <span class="spinner" aria-hidden="true"></span>
+          <div style="margin-top:8px;">조회 중…</div>
+        </div>
+      `;
+    }
+
+    function showError(err){
+      resultArea.setAttribute('aria-busy', 'false');
+      resultArea.innerHTML = `
+        <div class="card" style="border-color:#7f1d1d; background: #170e10;">
+          <div class="result-title">오류</div>
+          <p class="muted">${(err && err.message) ? err.message : '알 수 없는 오류가 발생했습니다.'}</p>
+        </div>`;
+    }
+
+    async function fetchModel() {
+        try {
+            // 서버 URL을 호출
+            const response = await fetch('/pfpa/api/');
+            
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            // JSON 파싱
+            const model = await response.json();
+            
+            // 렌더링
+            renderResult(model);
+
+        } catch (e) {
+            showError(e);
+        }
+    }
+
+    // 조회 버튼 핸들러
+    searchBtn.addEventListener('click', async () => {
+      const model = modelSel.value;
+      console.log( "#############addEventListener################# ")
+      console.log( model)
+      console.log( "#############addEventListener################# ")
+      showLoading();
+
+      // 실제 환경에서는 이곳에서 fetch 로 백엔드를 호출하세요.
+      // 아래는 네트워크 호출이 있다고 가정한 350ms 지연 후 렌더링 데모입니다.
+      // try {
+      //   await new Promise(r => setTimeout(r, 350));
+      //   renderResult(model);
+      // } catch (e) {
+      //   showError(e);
+      // }
+      
+      try{
+        fetchModel()
+      }catch(e){
+        showError(e);
+      }
+
+    });
+
+    // Enter 키로도 조회 가능
+    modelSel.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        searchBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
