@@ -12,6 +12,10 @@ from bbs.dao.bbs_models import Bbs, BbsFile
 from bbs.db.bbs_mysql import get_bbs_with_rownum, get_total_bbs_count
 from bbs.biz.real_estate_price_forecast import engine
 
+# ✅ Matplotlib 한글 폰트 설정 추가
+from bbs.utils.fonts import setup_matplotlib_fonts
+setup_matplotlib_fonts()
+
 logger = logging.getLogger(__name__)
 
 #####################################
